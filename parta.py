@@ -37,27 +37,23 @@ def get_matches(waiting_users, match_config):
 
     # TODO sort the pairs by descending order of distance score
     
-    sorted_score_list = sorted(score_list, key=lambda item: item["match_score"], reverse=True)
+    sorted_score_list = sorted(score_list, key=lambda item: item["match_score"])
     pprint.pprint(sorted_score_list[0:5])
 
     # TODO select top 25 pairs combinations 
 
-    ## TODO list all IDs a each user appears in 
-
-    ## TODO make a set of all IDs, need to isolate the 25 top score IDs from this set
-
     ## TODO scroll through the sorted_score_list, 
-    ### this is in descending order of score - the highest appers first, leverage this to remove the lower score IDs
-    ### hold current ID and delete the rest of the IDs both users occur in from the set 
-    ### go to next one; if ID is not in set, skip entry and go to next one and repeat 
-    ### at the end, set will have have only 25 IDs
-    ### extract the user pairs from the sorted list by ID search 
+    ### this is in increasing order of distance - the lowest appers first, leverage this to 'null' the higher distance IDs
+    ### hold current ID and null the rest of the IDs either users occur in sorted_score_list 48*2 ID should be nulled for the 25 non-nulled IDs
+    ### go to next one; if ID is null, skip entry and go to next one and repeat 
+    ### at the end, sorted list will have have only 25 non-null IDs
+    ### extract the user pairs from the sorted list by non-null ID search 
+
+
 
 
 
     # TODO output the combination in required format
-
-    # return_payload = [ item for item in sorted_score_list ]
 
     
 
