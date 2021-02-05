@@ -10,7 +10,7 @@ def get_matches(waiting_users, match_config):
     score_list = []
     return_payload = []
 
-    # TODO given match config, function to compute distance score between two users 
+    # TODO given match config, function to compute distance score between a user pair 
 
     def compute_distance_score(user_pair, match_config):
         user_a = user_pair[0]
@@ -20,33 +20,38 @@ def get_matches(waiting_users, match_config):
             + ( match_config["t_weight"] * abs(user_a["waiting_time"] - user_b["waiting_time"]) )
         return distance_score
           
-    # TODO generate all combinations of users 
+    # TODO generate all combinations of user pairs
 
     for base_index in range(len(waiting_users)):
         for floating_index in range(base_index+1,len(waiting_users)):
             pairs_list.append([waiting_users[base_index],waiting_users[floating_index]])
 
-    # TODO compute distance score for each combination
+    # TODO compute distance score for each pair
 
     score_list = [ 
                     {
+                        "id": idx, \
                         "user_a": item[0]["username"], \
                         "user_b": item[1]["username"], \
                         "match_score": compute_distance_score([item[0],item[1]], match_config) \
-                    }  for item in pairs_list 
+                    }  for idx,item in enumerate(pairs_list)
                 ]
 
-    # TODO find the best match for 
-    pprint.pprint(score_list)   
+    # TODO sort the pairs by descending order of distance score
     
-    # TODO output the combinations in required format
+    sorted_score_list = sorted(score_list, key=lambda item: item["match_score"], reverse=True)
+    pprint.pprint(sorted_score_list[0:5])
+
+    # TODO select top 25 pairs combinations 
+
+    # TODO output the combination in required format
+
+    # return_payload = [ item for item in sorted_score_list ]
 
     
-
-
 
 get_matches(waiting_users, match_config)
 
-if __name__ == '__main__':
-    matches = get_matches(waiting_users, match_config)
-    print(matches)
+# if __name__ == '__main__':
+#     matches = get_matches(waiting_users, match_config)
+#     print(matches)
