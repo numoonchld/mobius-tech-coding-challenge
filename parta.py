@@ -5,10 +5,6 @@ match_config = {"s_weight": 5, "l_weight": 25, "t_weight": 2}
 
 def get_matches(waiting_users, match_config):
 
-    # init lists to store processed at data at following stages
-    pairs_list = []
-    score_list = []
-    return_payload = []
 
     # TODO given match config, function to compute distance score between a user pair 
 
@@ -21,12 +17,14 @@ def get_matches(waiting_users, match_config):
         return distance_score
           
     # TODO generate all combinations of user pairs
+    pairs_list = []
 
     for base_index in range(len(waiting_users)):
         for floating_index in range(base_index+1,len(waiting_users)):
             pairs_list.append([waiting_users[base_index],waiting_users[floating_index]])
 
     # TODO compute distance score for each pair
+    score_list = []
 
     score_list = [ 
                     {
@@ -43,6 +41,19 @@ def get_matches(waiting_users, match_config):
     pprint.pprint(sorted_score_list[0:5])
 
     # TODO select top 25 pairs combinations 
+
+    ## TODO list all IDs a each user appears in 
+
+    ## TODO make a set of all IDs, need to isolate the 25 top score IDs from this set
+
+    ## TODO scroll through the sorted_score_list, 
+    ### this is in descending order of score - the highest appers first, leverage this to remove the lower score IDs
+    ### hold current ID and delete the rest of the IDs both users occur in from the set 
+    ### go to next one; if ID is not in set, skip entry and go to next one and repeat 
+    ### at the end, set will have have only 25 IDs
+    ### extract the user pairs from the sorted list by ID search 
+
+
 
     # TODO output the combination in required format
 
