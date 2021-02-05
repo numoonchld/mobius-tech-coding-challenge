@@ -28,7 +28,7 @@ def get_matches(waiting_users, match_config):
 
     score_list = [ 
                     {
-                        "id": idx, \
+                        "match_id": idx, \
                         "user_a": item[0]["username"], \
                         "user_b": item[1]["username"], \
                         "match_score": compute_distance_score([item[0],item[1]], match_config) \
@@ -38,17 +38,41 @@ def get_matches(waiting_users, match_config):
     # TODO sort the pairs by descending order of distance score
     
     sorted_score_list = sorted(score_list, key=lambda item: item["match_score"])
-    pprint.pprint(sorted_score_list[0:5])
+    # pprint.pprint(sorted_score_list[0:5])
 
     # TODO select top 25 pairs combinations 
 
     ## TODO scroll through the sorted_score_list, 
-    ### this is in increasing order of distance - the lowest appers first, leverage this to 'null' the higher distance IDs
-    ### hold current ID and null the rest of the IDs either users occur in sorted_score_list 48*2 ID should be nulled for the 25 non-nulled IDs
-    ### go to next one; if ID is null, skip entry and go to next one and repeat 
-    ### at the end, sorted list will have have only 25 non-null IDs
-    ### extract the user pairs from the sorted list by non-null ID search 
+    # this is in increasing order of distance - the lowest appers first, leverage this to 'null' the higher distance IDs
+    # hold current ID and null the rest of the IDs either users occur in sorted_score_list 48*2 ID should be nulled for the 25 non-nulled IDs
+    # go to next one; if ID is null, skip entry and go to next one and repeat 
+    # at the end, sorted list will have have only 25 non-null IDs
+    
 
+    def is_repeat_match(match_a,match_b):
+
+        if match_a['user_a'] == match_b['user_a'] or match_a['user_b'] == match_b['user_b'] or match_a['user_a'] == match_b['user_b'] or match_a['user_b'] == match_b['user_a']:
+            return True
+        else: return False
+
+
+    for index, base_match in enumerate(sorted_score_list):
+        # print(base_match['match_id'])
+        if base_match['match_id'] != None:
+            for test_match_index in range(index+1, len(sorted_score_list)):
+                test_match = sorted_score_list[test_match_index]
+                if is_repeat_match(base_match, test_match):
+                    sorted_score_list[test_match_index]['match_id'] = None
+                else: 
+                    continue
+
+
+    non_null_id_matches = [ match for match in sorted_score_list if match['match_id'] is not None ]
+
+    pprint.pprint(len(non_null_id_matches))
+
+
+     
 
 
 
