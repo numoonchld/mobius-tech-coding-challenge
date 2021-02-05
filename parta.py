@@ -57,7 +57,6 @@ def get_matches(waiting_users, match_config):
 
 
     for index, base_match in enumerate(sorted_score_list):
-        # print(base_match['match_id'])
         if base_match['match_id'] != None:
             for test_match_index in range(index+1, len(sorted_score_list)):
                 test_match = sorted_score_list[test_match_index]
@@ -69,20 +68,18 @@ def get_matches(waiting_users, match_config):
 
     non_null_id_matches = [ match for match in sorted_score_list if match['match_id'] is not None ]
 
-    pprint.pprint(len(non_null_id_matches))
-
-
-     
-
-
-
-
     # TODO output the combination in required format
 
-    
+    formatted_matches = { "matches": {}}
 
-get_matches(waiting_users, match_config)
+    for match in non_null_id_matches:
+        # print(match["user_a"],match["user_b"])
+        formatted_matches["matches"][match["user_a"]] = match["user_b"]
 
-# if __name__ == '__main__':
-#     matches = get_matches(waiting_users, match_config)
-#     print(matches)
+    return formatted_matches
+
+
+
+if __name__ == '__main__':
+    matches = get_matches(waiting_users, match_config)
+    print(matches)
